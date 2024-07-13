@@ -19,6 +19,9 @@ router.put(
   zodValidationRequest(ProductValidation.updateProductValidationSchema),
   ProductControllers.updateProduct,
 )
+
+router.put('/:id/stock', ProductControllers.updateProductStock)
+
 router.delete('/:id', ProductControllers.deleteProduct)
 
 export const productRoutes = router

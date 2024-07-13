@@ -49,6 +49,32 @@ const updateProductIntoDB = async (
   return updatedProduct
 }
 
+const updateProductStockIntoDB = async (
+  productId: string,
+  updateData: Partial<TProduct>,
+) => {
+  const isProductExists = await Product.findById(productId)
+
+  if (!isProductExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found')
+  }
+
+  const updatedProduct = await Product.findByIdAndUpdate(
+    productId,
+    updateData,
+    {
+      new: true,
+      runValidators: true,
+    },
+  )
+
+  if (!updatedProduct) {
+    throw new AppError(httpStatus.NOT_IMPLEMENTED, 'Update Failed')
+  }
+
+  return updatedProduct
+}
+
 const deleteProductFromDB = async (productId: string) => {
   const isProductExists = await Product.findById(productId)
 
@@ -70,5 +96,6 @@ export const ProductServices = {
   getAllProductsFromDB,
   getProductByIdFromDB,
   updateProductIntoDB,
+  updateProductStockIntoDB,
   deleteProductFromDB,
 }

@@ -62,6 +62,20 @@ const updateProduct = catchAsync(async (req, res) => {
   })
 })
 
+const updateProductStock = catchAsync(async (req, res) => {
+  const { id } = req.params
+  const product = await ProductServices.updateProductStockIntoDB(id, req.body)
+  if (!product) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found')
+  }
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Product stock updated successfully',
+    data: product,
+  })
+})
+
 const deleteProduct = catchAsync(async (req, res) => {
   const { id } = req.params
   const deletedProduct = await ProductServices.deleteProductFromDB(id)
@@ -82,5 +96,6 @@ export const ProductControllers = {
   getAllProducts,
   getProductById,
   updateProduct,
+  updateProductStock,
   deleteProduct,
 }
